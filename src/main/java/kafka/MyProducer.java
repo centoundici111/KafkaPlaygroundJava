@@ -32,7 +32,8 @@ public class MyProducer {
                         "France");
         try {
             RecordMetadata recordMetadata = producer.send(record).get();
-            System.out.println(recordMetadata.offset());
+            System.out.println("Record sent"+  " to partition " + recordMetadata.partition()
+                    + " with offset " + recordMetadata.offset());
         } catch (Exception e) {
             e.printStackTrace();
         }
