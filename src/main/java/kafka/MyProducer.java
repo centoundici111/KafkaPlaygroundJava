@@ -10,16 +10,16 @@ import java.util.Properties;
 import java.util.UUID;
 
 public class MyProducer {
+
+
     Properties kafkaProps = new Properties();
 
 
     public MyProducer() {
-        kafkaProps.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        kafkaProps.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConfigs.BOOTSTRAP_SERVERS);
         kafkaProps.put(ProducerConfig.CLIENT_ID_CONFIG, "cliente1");
-        kafkaProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                "org.apache.kafka.common.serialization.StringSerializer");
-        kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                "org.apache.kafka.common.serialization.StringSerializer");
+        kafkaProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaConfigs.KEY_SERIALIZER);
+        kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaConfigs.VALUE_SERIALIZER);
         kafkaProps.put(ProducerConfig.ACKS_CONFIG, "all");
     }
 
@@ -29,7 +29,7 @@ public class MyProducer {
         ProducerRecord<String, String> record =
                 new ProducerRecord<>("test",
                         UUID.randomUUID().toString(),
-                        "France");
+                        "{\"clave\": \"valor\"}");
         try {
             RecordMetadata recordMetadata = producer.send(record).get();
             System.out.println("Record sent"+  " to partition " + recordMetadata.partition()
@@ -40,6 +40,8 @@ public class MyProducer {
     }
 
     public static void main(String[] args) {
-        new MyProducer().produce();
+        for (int i = 0; i < 10; i++) {
+            new MyProducer().produce();
+        }
     }
 }
