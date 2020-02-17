@@ -17,7 +17,7 @@ public class MyProducer {
 
     public MyProducer() {
         kafkaProps.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConfigs.BOOTSTRAP_SERVERS);
-        kafkaProps.put(ProducerConfig.CLIENT_ID_CONFIG, "cliente1");
+        kafkaProps.put(ProducerConfig.CLIENT_ID_CONFIG, "productor");
         kafkaProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaConfigs.KEY_SERIALIZER);
         kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaConfigs.VALUE_SERIALIZER);
         kafkaProps.put(ProducerConfig.ACKS_CONFIG, "all");
@@ -27,9 +27,9 @@ public class MyProducer {
     public void produce() {
         final KafkaProducer<String, String> producer = new KafkaProducer<>(kafkaProps);
         ProducerRecord<String, String> record =
-                new ProducerRecord<>("test",
+                new ProducerRecord<>("KafkaPlayground1",
                         UUID.randomUUID().toString(),
-                        "{\"clave\": \"valor\"}");
+                        "{\"nuevo \": \"otro\"}");
         try {
             RecordMetadata recordMetadata = producer.send(record).get();
             System.out.println("Record sent"+  " to partition " + recordMetadata.partition()
